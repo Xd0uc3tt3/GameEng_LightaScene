@@ -11,11 +11,11 @@ public class OccasionalFlicker : MonoBehaviour
     public float minFlashTime = 0.05f;
     public float maxFlashTime = 0.5f;
 
-    Light flickerLight;
-    float targetIntensity;
-    float nextFlashTime;
-    float flashEndTime;
-    bool flashing;
+    private Light flickerLight;
+    private float targetIntensity;
+    private float nextFlashTime;
+    private float flashEndTime;
+    private bool flashing;
 
     void Start()
     {
@@ -26,6 +26,13 @@ public class OccasionalFlicker : MonoBehaviour
 
     void Update()
     {
+        if (LightManager.LightsOut)
+        {
+            flickerLight.enabled = false;
+            return;
+        }
+
+        flickerLight.enabled = true;
         flickerLight.intensity = Mathf.Lerp(flickerLight.intensity, targetIntensity, Time.deltaTime * fadeSpeed);
 
         if (!flashing && Time.time >= nextFlashTime)

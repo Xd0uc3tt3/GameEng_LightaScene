@@ -7,9 +7,9 @@ public class LightFlicker : MonoBehaviour
     public float flickerIntervalMin = 0.01f;
     public float flickerIntervalMax = 0.15f;
 
-    Light flickerLight;
-    float baseIntensity;
-    float nextFlickerTime;
+    private Light flickerLight;
+    private float baseIntensity;
+    private float nextFlickerTime;
 
     void Start()
     {
@@ -20,6 +20,14 @@ public class LightFlicker : MonoBehaviour
 
     void Update()
     {
+        if (LightManager.LightsOut)
+        {
+            flickerLight.enabled = false;
+            return;
+        }
+
+        flickerLight.enabled = true;
+
         if (Time.time >= nextFlickerTime)
         {
             flickerLight.intensity = baseIntensity * Random.Range(minIntensity, maxIntensity);
